@@ -7,25 +7,23 @@ Homebrew tap for [pGenie](https://pgenie.io) — a type-safe PostgreSQL client c
 Add the tap and install the `pgn` CLI tool in one command:
 
 ```sh
+brew install pgenie-io/tap/pgn
+```
+
+The formula installs a pre-built binary for your Mac's architecture (Apple
+Silicon or Intel) with no additional dependencies.
+
+### Build from source
+
+To compile from the latest development version instead, pass `--HEAD`:
+
+```sh
 brew install --HEAD pgenie-io/tap/pgn
 ```
 
-> **Note:** Until a stable release is published the formula has no versioned
-> source URL, so `--HEAD` is required.  Omitting it will produce a
-> `No available formula` or similar error.
-
-The formula compiles `pgn` from source using the Haskell toolchain
+This builds from the `master` branch using the Haskell toolchain
 (`ghc` + `cabal-install`) and links against Homebrew's `libpq`.  The first
-install can take several minutes while Haskell dependencies are compiled.
-
-### What gets installed
-
-| Dependency | Role |
-|---|---|
-| `ghc` | Haskell compiler (build-time) |
-| `cabal-install` | Haskell build tool (build-time) |
-| `pkg-config` | Library discovery (build-time) |
-| `libpq` | PostgreSQL client library (runtime) |
+build can take several minutes while Haskell dependencies are compiled.
 
 ## Usage
 
