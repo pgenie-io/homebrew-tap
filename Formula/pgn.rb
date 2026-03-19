@@ -7,11 +7,18 @@ class Pgn < Formula
   on_macos do
     on_arm do
       url "https://github.com/pgenie-io/pgenie/releases/download/v0.1.0/pgn-macos-arm64.tar.gz"
-      sha256 "dea9b579b251dd86a13ed51d125a6caccb566320a81598ce1c02c1f25772d7c0"
+      sha256 "a61f33f50298596db8c7d0263fa8e38b594d8594e37466f2cc4e95c9f98d1805"
     end
     on_intel do
-      url "https://github.com/pgenie-io/pgenie/releases/download/v0.1.0/pgn-macos-x86_64.tar.gz"
-      sha256 "e4fe899ea3d8c95177cbf7e7cb8fbba390bffb2993c43a76230dd25d4b47dd49"
+      url "https://github.com/pgenie-io/pgenie/releases/download/v0.1.0/pgn-macos-x64.tar.gz"
+      sha256 "ad6f974b186316153366b30503256acc6346eb15ce7eeec4f4a53035cb768c5b"
+    end
+  end
+
+  on_linux do
+    on_intel do
+      url "https://github.com/pgenie-io/pgenie/releases/download/v0.1.0/pgn-linux-x64.tar.gz"
+      sha256 "51c28a58fc53eefaeea67bad8c8ecb92c177c23d4c2d6075527f95c969246289"
     end
   end
 
@@ -22,11 +29,9 @@ class Pgn < Formula
   depends_on "ghc" => :build if build.head?
   depends_on "pkg-config" => :build if build.head?
 
-  # PostgreSQL client library required by the postgresql-libpq C binding.
-  # libpq is keg-only in Homebrew, so its prefix must be passed explicitly to
-  # the cabal build below.  The pre-built binaries have libpq statically
-  # linked, so this dependency is only needed for source builds.
-  depends_on "libpq" if build.head?
+  # PostgreSQL client library required at runtime by the pre-built binaries and
+  # by the postgresql-libpq C binding when building from source.
+  depends_on "libpq"
 
   def install
     if build.head?
@@ -50,8 +55,7 @@ class Pgn < Formula
              "--install-method=copy",
              "--overwrite-policy=always"
     else
-      arch = Hardware::CPU.arm? ? "arm64" : "x86_64"
-      bin.install "pgn-macos-#{arch}" => "pgn"
+      bin.install "pgn"
     end
   end
 
