@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: pgenie-io/demo
-          ref: 3fd8694f8f77c46e99c5b2d16a88f63b0d6aa21b
+          ref: d1481320ee1951ab8b28b2952a3f388a508a0e84
           path: demo
 
       - name: Run end-to-end test
@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: pgenie-io/demo
-          ref: 3fd8694f8f77c46e99c5b2d16a88f63b0d6aa21b
+          ref: d1481320ee1951ab8b28b2952a3f388a508a0e84
           path: demo
 
       - name: Set up Docker
