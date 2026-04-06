@@ -30,6 +30,14 @@ This builds from the `master` branch using the Haskell toolchain
 (`ghc` + `cabal-install`) and links against Homebrew's `libpq`. The first
 build can take several minutes while Haskell dependencies are compiled.
 
+## Update
+
+To update to the latest version, when you already have it installed, run:
+
+```sh
+brew upgrade pgenie-io/tap/pgn
+```
+
 ## Usage
 
 ```sh
