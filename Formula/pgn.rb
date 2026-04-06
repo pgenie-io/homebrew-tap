@@ -11,7 +11,7 @@ class Pgn < Formula
     end
     on_intel do
       url "https://github.com/pgenie-io/pgenie/releases/download/v0.2.0/pgn-macos-x64.tar.gz"
-      sha256 "afe56938e7f137bf7fb57b973fa4b9b50f0c63fba26b32b73d43ddaaba8ec3f1"
+      sha256 "ad5fd5efcd8adbb3fb289c4ee9f4b9b9a6df56d1704bc8809861d953a9ed3e09"
     end
   end
 
