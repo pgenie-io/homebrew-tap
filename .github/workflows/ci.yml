@@ -5,6 +5,9 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_run:
+    workflows: ["Update pgn Formula"]
+    types: [completed]
 
 permissions:
   contents: read
