@@ -1,0 +1,113 @@
+name: Update pgn Formula
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag to sync, for example v0.3.1"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.repository.default_branch || 'main' }}
+
+      - name: Resolve release tag
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          release_tag="${{ github.event.inputs.release_tag }}"
+
+          if [[ -z "$release_tag" ]]; then
+            echo "A release tag is required."
+            exit 1
+          fi
+
+          echo "tag=$release_tag" >> "$GITHUB_OUTPUT"
+          echo "version=${release_tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Download release assets and update formula
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import os
+          import re
+          import sys
+          from pathlib import Path
+          from urllib.request import urlopen
+
+          release_tag = os.environ["RELEASE_TAG"]
+          release_tag = release_tag if release_tag.startswith("v") else f"v{release_tag}"
+          release_version = os.environ["RELEASE_VERSION"]
+
+          formula_path = Path("Formula/pgn.rb")
+          text = formula_path.read_text(encoding="utf-8")
+
+          text, count = re.subn(r'^  version ".*"$', f'  version "{release_version}"', text, flags=re.MULTILINE)
+          if count != 1:
+              sys.exit("failed to update version")
+
+          assets = [
+              "pgn-macos-arm64.tar.gz",
+              "pgn-macos-x64.tar.gz",
+              "pgn-linux-x64.tar.gz",
+          ]
+
+          for asset in assets:
+              url = f"https://github.com/pgenie-io/pgenie/releases/download/{release_tag}/{asset}"
+              digest = hashlib.sha256()
+
+              with urlopen(url) as response:
+                  while True:
+                      chunk = response.read(1024 * 1024)
+                      if not chunk:
+                          break
+                      digest.update(chunk)
+
+              sha256 = digest.hexdigest()
+              pattern = rf'url "https://github.com/pgenie-io/pgenie/releases/download/[^\"]+/{re.escape(asset)}"\n\s*sha256 "[0-9a-f]+"'
+              replacement = f'url "{url}"\n      sha256 "{sha256}"'
+              text, count = re.subn(pattern, replacement, text)
+
+              if count != 1:
+                  sys.exit(f"failed to update {asset}")
+
+          formula_path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit and push changes
+        shell: bash
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch || 'main' }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/pgn.rb
+
+          if git diff --cached --quiet; then
+            echo "No formula changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Update pgn formula for ${{ steps.release.outputs.tag }}"
+          git push origin HEAD:"$DEFAULT_BRANCH"
