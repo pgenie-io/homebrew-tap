@@ -1,24 +1,24 @@
 class Pgn < Formula
   desc "Type-safe PostgreSQL client code generator"
   homepage "https://pgenie.io"
-  version "0.5.1"
+  version "0.6.0"
   license "GPL-3.0-or-later"
 
   on_macos do
     on_arm do
-      url "https://github.com/pgenie-io/pgenie/releases/download/v0.5.1/pgn-macos-arm64.tar.gz"
-      sha256 "18c37549e9641db0035a7f68dd00777303e444f117a6a6a3162e29931b323c7c"
+      url "https://github.com/pgenie-io/pgenie/releases/download/v0.6.0/pgn-macos-arm64.tar.gz"
+      sha256 "94f4e40b09d87193f7d90f316a4d53f4f2a171a63edd04bdef9d5a07e12d3426"
     end
     on_intel do
-      url "https://github.com/pgenie-io/pgenie/releases/download/v0.5.1/pgn-macos-x64.tar.gz"
-      sha256 "d7dffe8a8c2d179478cb444a91557e645e92e0e53f76ebdcf9b1740a011df732"
+      url "https://github.com/pgenie-io/pgenie/releases/download/v0.6.0/pgn-macos-x64.tar.gz"
+      sha256 "d4accd852b408400a2bbdd59a8c811af57eb805bc88bdf25285db83c45b181bf"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/pgenie-io/pgenie/releases/download/v0.5.1/pgn-linux-x64.tar.gz"
-      sha256 "776beea12e3b7a63a762627e61a1d89e7d8ae6337f21e46ca489da3507fdf815"
+      url "https://github.com/pgenie-io/pgenie/releases/download/v0.6.0/pgn-linux-x64.tar.gz"
+      sha256 "680f41198e96bd3f462de9aa6710cd8585b4154993f159693606a705d6ca927b"
     end
   end
 
