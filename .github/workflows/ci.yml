@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: pgenie-io/demo
-          ref: d1481320ee1951ab8b28b2952a3f388a508a0e84
+          ref: 361f2f0c81c704ac41d0533d28920bc7ddb35d9f
           path: demo
 
       - name: Run end-to-end test
