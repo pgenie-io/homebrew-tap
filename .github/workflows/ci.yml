@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  DEMO_REF: 361f2f0c81c704ac41d0533d28920bc7ddb35d9f
+  DEMO_REF: b450059b24eb01603f0683ac538f52efc7fabdd5
 
 jobs:
   linux_x64:
