@@ -19,6 +19,8 @@ jobs:
   linux_x64:
     name: CI (Linux x64)
     runs-on: ubuntu-latest
+    env:
+      HOMEBREW_NO_SANDBOX_LINUX: 1
 
     steps:
       - uses: actions/checkout@v6
